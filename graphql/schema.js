@@ -8,7 +8,7 @@ exports.schema = buildSchema(
     }
     
     type Query {
-        allHero: [Hero]
+        allHeroes: [Hero]
         hero(id: String): Hero
     }`
 );

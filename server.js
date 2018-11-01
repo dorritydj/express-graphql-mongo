@@ -10,14 +10,12 @@ var { start } = require('./mongo/connect');
 const port = 3000;
 var app = express();
 
-start(() => {
-    console.log('Starting server');
+console.log('Starting server');
 
-    app.use('/graphql', graphqlHttp({
-        schema: schema,
-        rootValue: resolver,
-        graphiql: true
-    }));
+app.use('/graphql', graphqlHttp({
+    schema: schema,
+    rootValue: resolver,
+    graphiql: true
+}));
 
-    app.listen(port);
-});
+app.listen(port);

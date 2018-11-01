@@ -1,22 +1,18 @@
-const Heroes = [
-    {
-        id: '1',
-        name: 'Clark Kent',
-        alias: 'Superman'
-    },
-    {
-        id: '2',
-        name: 'Tony Stark',
-        alias: 'Ironman'
-    }
-]
-
+const { find } = require('../mongo/connect');
+const { GraphQLList } = require('graphql');
 
 exports.resolver = {
-    allHero: () => {
-        return Heroes;
+    allHeroes: () => {
+        return find()
+            .then((result) => {
+                return result;
+            });
     },
     hero: ({ id }) => {
-        return Heroes.find(hero => hero.id === id);
+        return find({ id })
+            .then(result => {
+                console.log(result);
+                return result[0];
+            });
     }
 }
