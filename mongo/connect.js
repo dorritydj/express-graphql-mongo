@@ -3,7 +3,7 @@ const ObjectID = require('mongodb').ObjectID;
 const url = 'mongodb://localhost:27017/';
 const name = 'HeroesDB';
 
-exports.find = (query = {}) => {
+exports.find = (query = {}, collection) => {
     return MongoClient.connect(url)
         .then((db) => {
             const dbo = db.db(name);
@@ -13,7 +13,7 @@ exports.find = (query = {}) => {
                 delete query.id;
             }
 
-            const found = dbo.collection('heroes').find(query).toArray();
+            const found = dbo.collection(collection).find(query).toArray();
 
             db.close();
 
@@ -24,12 +24,33 @@ exports.find = (query = {}) => {
         })
 }
 
-exports.add = (query = {}) => {
+exports.aggregate = (query = [], matchID = null, collection) => {
     return MongoClient.connect(url)
         .then(db => {
             const dbo = db.db(name);
 
-            const added = dbo.collection('heroes').insertOne(query);
+            if (matchID !== null) {
+                query.unshift({
+                    $match: {
+                        _id: new ObjectID(matchID)
+                    }
+                })
+            }
+
+            const aggregated = dbo.collection(collection).aggregate(query).toArray();
+
+            db.close();
+
+            return aggregated;
+        })
+}
+
+exports.add = (query = {}, collection) => {
+    return MongoClient.connect(url)
+        .then(db => {
+            const dbo = db.db(name);
+
+            const added = dbo.collection(collection).insertOne(query);
 
             db.close();
 

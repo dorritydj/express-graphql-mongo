@@ -7,9 +7,17 @@ exports.schema = buildSchema(
         alias: String
     }
 
+    type City {
+        id: String
+        name: String
+        protectors: [Hero]
+    }
+
     type Query {
         getHeroes: [Hero]
         getHero(id: String): Hero
+        getCities: [City]
+        getCity(id: String): City
     }
 
     type Mutation {
