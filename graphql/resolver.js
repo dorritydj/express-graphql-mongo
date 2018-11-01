@@ -1,18 +1,34 @@
-const { find } = require('../mongo/connect');
+const { find, add } = require('../mongo/connect');
 const { GraphQLList } = require('graphql');
 
+function mapID(arr) {
+    return arr.map(item => {
+        return { id: item._id.toString(), ...item };
+    });
+}
+
 exports.resolver = {
-    allHeroes: () => {
+    getHeroes: () => {
         return find()
-            .then((result) => {
-                return result;
+            .then((found) => {
+                return mapID(found);
             });
     },
-    hero: ({ id }) => {
-        return find({ id })
+    getHero: (hero) => {
+        return find(hero)
+            .then(found => {
+                return mapID(found)[0];
+            });
+    },
+    addHero: (hero) => {
+        return find(hero)
+            .then(found => {
+                return found.length === 0 ?
+                    add(hero).then(added => added.ops) :
+                    found;
+            })
             .then(result => {
-                console.log(result);
-                return result[0];
+                return mapID(result)[0];
             });
     }
 }

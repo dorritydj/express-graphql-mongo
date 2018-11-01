@@ -1,4 +1,4 @@
-var { buildSchema } = require('graphql');
+const { buildSchema } = require('graphql');
 
 exports.schema = buildSchema(
     `type Hero {
@@ -6,9 +6,13 @@ exports.schema = buildSchema(
         name: String
         alias: String
     }
-    
+
     type Query {
-        allHeroes: [Hero]
-        hero(id: String): Hero
+        getHeroes: [Hero]
+        getHero(id: String): Hero
+    }
+
+    type Mutation {
+        addHero(name: String!, alias: String!): Hero
     }`
 );
