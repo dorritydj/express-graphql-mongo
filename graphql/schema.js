@@ -22,5 +22,6 @@ exports.schema = buildSchema(
 
     type Mutation {
         addHero(name: String!, alias: String!): Hero
+        addCity(name: String!): City
     }`
 );

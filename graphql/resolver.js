@@ -62,7 +62,18 @@ exports.resolver = {
         return find(hero, 'heroes')
             .then(found => {
                 return found.length === 0 ?
-                    add(hero).then(added => added.ops) :
+                    add(hero, 'heroes').then(added => added.ops) :
+                    found;
+            })
+            .then(result => {
+                return mapID(result)[0];
+            });
+    },
+    addCity: (city) => {
+        return find(city, 'cities')
+            .then(found => {
+                return found.length === 0 ?
+                    add({ ...city, protectors: [] }, 'cities').then(added => added.ops) :
                     found;
             })
             .then(result => {
